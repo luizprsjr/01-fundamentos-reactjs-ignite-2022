@@ -18,7 +18,7 @@ export function Sidebar() {
         />
 
         <strong>Luiz Pires</strong>
-        <span>Developer</span>
+        <span>Mobile Developer</span>
       </div>
 
       <footer>
