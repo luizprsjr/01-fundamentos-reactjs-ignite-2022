@@ -1,4 +1,9 @@
-import { useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  InvalidEvent,
+  useState,
+} from 'react';
 
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -40,15 +45,27 @@ export function Post({ author, publishedAt, content }: PostProps) {
     addSuffix: true
   });
 
-  function handleCrateNewComment() {
+  function handleCrateNewComment(event: FormEvent) {
     event.preventDefault()
 
     setComments([...comments, newCommentText]);
     setNewCommentText('');
   }
 
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setNewCommentText(event.target.value);
+  }
+
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
+    //
+  }
+
+  function deleteComment(commentToDelete: string) {
+    const commentsWithoutDeletedOne = comments.filter(comment => {
+      return comment !== commentToDelete;
+    })
+
+    setComments(commentsWithoutDeletedOne);
   }
 
   return (
@@ -94,7 +111,13 @@ export function Post({ author, publishedAt, content }: PostProps) {
 
       <div className={styles.commentList}>
         {comments.map(comment => {
-          return <Comment key={comment} content={comment} />
+          return (
+            <Comment
+              key={comment}
+              content={comment}
+              onDeleteComment={deleteComment}
+            />
+          )
         })}
       </div>
     </article>
